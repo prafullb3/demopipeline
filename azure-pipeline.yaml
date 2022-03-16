@@ -32,5 +32,21 @@ stages :
                 az group create -l $LOCATION -n $RESOURCE_GROUP
                 az acr create -g $RESOURCE_GROUP -n $ACR --sku basic --admin-enabled true
                 az monitor log-analytics workspace create -g $RESOURCE_GROUP --workspace-name $LOG_ANALYTICS_WORKSPACE
+  - stage: Build
+    dependsOn: [create_acr]
+    displayName: Build sample app
+    jobs:  
+    - job: Build
+      displayName: Build job
+      steps:
+      - task: Docker@2
+        displayName: Build and push sample app to container registry
+        inputs:
+          command: buildAndPush
+          repository: 'sampleapp'
+          dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+          containerRegistry: 'containersdemoregistry'
+          tags: '$(Build.BuildId)'
+
 
   
