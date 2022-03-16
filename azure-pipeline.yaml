@@ -17,7 +17,7 @@ stages :
           - task: AzureCLI@2
             displayName: 'Deploy RG and ACR'
             inputs:
-              azureSubscription: 'azuresubscription1'
+              azureSubscription: 'Azure connection'
               scriptType: bash
               scriptLocation: inlineScript
               addSpnToEnvironment: true
